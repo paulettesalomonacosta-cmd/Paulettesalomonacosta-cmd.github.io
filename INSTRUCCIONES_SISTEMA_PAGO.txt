@@ -1,0 +1,168 @@
+========================================
+SISTEMA DE MÉTODOS DE PAGO - INSTRUCCIONES
+========================================
+
+ARCHIVOS CREADOS/MODIFICADOS:
+============================
+
+1. crear_tabla_ordenes.php (NUEVO)
+   - Crea las tablas necesarias para almacenar órdenes
+   - Ejecutar una sola vez: http://tudominio.com/tiendaonline/crear_tabla_ordenes.php
+
+2. metodos_pago.php (NUEVO)
+   - Página para seleccionar método de pago (tarjeta o tienda)
+   - Formulario para capturar datos de tarjeta
+   - Validación en cliente
+
+3. procesar_pago.php (NUEVO)
+   - Procesa la orden y genera código de barras
+   - Guarda los datos en la base de datos
+   - Genera ID único para cada orden
+
+4. confirmacion_pago.php (NUEVO)
+   - Muestra confirmación de la compra
+   - Genera código de barras visual (CODE128)
+   - Permite descargar/imprimir el comprobante
+   - Muestra instrucciones según el método de pago
+
+5. ver_ordenes.php (NUEVO)
+   - Panel para ver todas las órdenes
+   - Muestra códigos de barras
+   - Filtrado por estado
+   - Modal con detalles de cada orden
+
+6. get_detalle_orden.php (NUEVO)
+   - Retorna detalles de una orden en formato JSON/HTML
+   - Usado por el modal de ver_ordenes.php
+
+7. carrito.php (MODIFICADO)
+   - El botón "Finalizar Compra" ahora redirige a metodos_pago.php
+
+INSTRUCCIONES DE INSTALACIÓN:
+============================
+
+PASO 1: Crear las tablas
+------------------------
+1. Abre: http://localhost/tiendaonline/crear_tabla_ordenes.php
+   (Deberías ver mensajes verdes indicando que las tablas se crearon)
+
+2. Si obtienes errores, verifica que tu base de datos 'tiendaonline' existe
+   y que tienes acceso a ella
+
+PASO 2: Verificar la estructura
+-------------------------------
+Las siguientes tablas deben crearse en tu BD:
+
+- ordenes: Almacena información de cada compra
+  - idorden (auto-increment)
+  - idusuario
+  - fecha_orden
+  - total
+  - estado (pendiente_pago_tarjeta, pendiente_pago_tienda, pagado)
+  - metodo_pago (tarjeta, tienda)
+  - numero_tarjeta (últimos 4 dígitos)
+  - nombre_tarjeta
+  - fecha_vencimiento
+  - codigo_barras (único)
+  - tienda_cercana
+  - detalles_orden (JSON)
+
+- detalles_orden: Almacena los productos de cada orden
+  - iddetalle
+  - idorden
+  - idproducto
+  - nombre_producto
+  - precio
+  - cantidad
+  - subtotal
+
+PASO 3: Probar el sistema
+------------------------
+1. Ve a tu tienda: http://localhost/tiendaonline/index.php
+2. Agrega productos al carrito
+3. Haz clic en "Mi Carrito"
+4. Haz clic en "Finalizar Compra"
+5. Selecciona un método de pago:
+
+   a) PAGO CON TARJETA:
+      - Completa los datos de la tarjeta
+      - Click en "Procesar Compra"
+      - Verás la confirmación con número de orden
+
+   b) PAGAR EN TIENDA:
+      - Selecciona una tienda cercana
+      - Click en "Procesar Compra"
+      - Se generará un código de barras CODE128
+      - Puedes descargar o imprimir el código
+
+PASO 4: Ver órdenes (Panel de Admin)
+-----------------------------------
+1. Ve a: http://localhost/tiendaonline/ver_ordenes.php
+2. Verás todas las órdenes registradas
+3. Puedes:
+   - Ver detalles de cada orden
+   - Ver códigos de barras (para órdenes de tienda)
+   - Filtrar por estado
+
+CÓDIGOS DE ESTADO:
+=================
+- pendiente_pago_tarjeta: Esperando confirmación del pago con tarjeta
+- pendiente_pago_tienda: Esperando pago en tienda (código de barras activo)
+- pagado: Orden pagada
+- cancelado: Orden cancelada (si implementas cancelación)
+
+CÓDIGO DE BARRAS:
+================
+- Formato: CODE128
+- Generado automáticamente para cada orden de tienda
+- Formato: OED[timestamp][número aleatorio]
+- Ejemplo: OED1685632801234
+
+CARACTERÍSTICAS DE SEGURIDAD:
+============================
+1. Solo se almacena los últimos 4 dígitos de la tarjeta
+2. Los datos de tarjeta se envían por POST (usar HTTPS en producción)
+3. Validación de formato de CVV en cliente y servidor
+4. Códigos de barras únicos por orden
+
+PRÓXIMOS PASOS (OPCIONAL):
+==========================
+1. Implementar encriptación SSL/HTTPS
+2. Integrar pasarela de pago (Stripe, PayPal, etc.)
+3. Sistema de confirmación de pago por email
+4. Cambio de estado de orden a "pagado" automático
+5. Reporte de ventas
+6. Sincronización de stock con órdenes
+7. Exportar órdenes a Excel/PDF
+
+NOTAS IMPORTANTES:
+==================
+1. Este sistema almacena datos de demostración. En PRODUCCIÓN debe usar pasarela de pago real.
+2. Los datos de tarjeta son sensibles - siempre usar HTTPS en producción.
+3. Cumplir con PCI DSS si vas a manejar tarjetas reales.
+4. Implementar validación de email para confirmaciones.
+5. Los códigos de barras son solo visuales para demostración.
+
+SOLUCIÓN DE PROBLEMAS:
+======================
+
+"Error al crear tabla":
+- Verifica que la base de datos existe
+- Verifica permisos de usuario en MySQL
+- Asegúrate que el archivo conexion.php esté correcto
+
+"Carrito vacío después de comprar":
+- Esto es normal - se limpia después de procesar la orden
+- Los datos están guardados en la tabla 'ordenes'
+
+"Código de barras no se ve":
+- Necesita conexión a internet para cargar JsBarcode
+- Abre la consola del navegador (F12) para ver errores
+
+"Errores de sesión":
+- Asegúrate que session_start() está al inicio de los archivos
+- Verifica permisos de carpeta para archivos de sesión
+
+========================================
+¡Sistema listo para usar!
+========================================

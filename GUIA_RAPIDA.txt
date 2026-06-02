@@ -1,0 +1,216 @@
+========================================
+GUÍA RÁPIDA - SISTEMA DE PAGO
+========================================
+
+¡BIENVENIDO! Este es tu nuevo sistema de métodos de pago con 2 opciones:
+1. Pago con Tarjeta
+2. Pagar en Tienda (con código de barras)
+
+PRIMERO: CREAR LAS TABLAS EN LA BASE DE DATOS
+==============================================
+
+Opción A - Automática (RECOMENDADA):
+1. Abre tu navegador
+2. Ve a: http://localhost/tiendaonline/crear_tabla_ordenes.php
+3. Deberías ver mensajes verdes
+
+Opción B - Manual (Si A no funciona):
+1. Abre phpMyAdmin
+2. Ve a la base de datos 'tiendaonline'
+3. Haz clic en "SQL"
+4. Abre el archivo: schema_ordenes.sql
+5. Copia y pega el contenido
+6. Haz clic en "Ejecutar"
+
+SEGUNDO: PROBAR EL SISTEMA
+===========================
+
+Cliente (Usuario):
+1. Ve a: http://localhost/tiendaonline/index.php
+2. Agrega productos al carrito
+3. Haz clic en "Mi Carrito"
+4. Haz clic en "Finalizar Compra" ← AQUÍ empieza el flujo de pago
+
+Administrador (Ver órdenes):
+1. Ve a: http://localhost/tiendaonline/gestor_ordenes.php
+2. Verás todas las órdenes, estadísticas y estados
+3. Puedes marcar órdenes como "Pagadas"
+
+FLUJOS DE COMPRA:
+================
+
+FLUJO 1: PAGO CON TARJETA
+---------------------------
+Cliente selecciona "Pago con Tarjeta"
+    ↓
+Ingresa datos:
+  - Nombre en tarjeta
+  - Número de tarjeta (ej: 1234 5678 9012 3456)
+  - Fecha vencimiento (ej: 12/25)
+  - CVV (ej: 123)
+    ↓
+Click "Procesar Compra"
+    ↓
+Orden guardada en BD con estado "pendiente_pago_tarjeta"
+    ↓
+Cliente ve confirmación con número de orden
+    ↓
+Admin marca como "Pagado" en gestor_ordenes.php
+
+FLUJO 2: PAGAR EN TIENDA
+-------------------------
+Cliente selecciona "Pagar en Tienda"
+    ↓
+Selecciona tienda cercana
+    ↓
+Click "Procesar Compra"
+    ↓
+Se genera código de barras único (ej: OED1685632801234)
+    ↓
+Cliente ve:
+  - Código de barras visual (CODE128)
+  - Número de código
+  - Botón para descargar/imprimir
+    ↓
+Cliente presenta código en tienda
+    ↓
+Admin ve código en gestor_ordenes.php
+    ↓
+Admin marca como "Pagado" cuando confirma pago en tienda
+
+ARCHIVOS CREADOS:
+================
+
+Sistema de Pago:
+✓ metodos_pago.php         - Selector de método de pago
+✓ procesar_pago.php        - Procesa la orden
+✓ confirmacion_pago.php    - Muestra confirmación + código de barras
+✓ crear_tabla_ordenes.php  - Crea tablas en BD
+✓ schema_ordenes.sql       - Script SQL alternativo
+
+Administración:
+✓ gestor_ordenes.php       - Panel de control de órdenes
+✓ ver_ordenes.php          - Vista de todas las órdenes
+✓ get_detalle_orden.php    - Detalle de cada orden
+
+Documentación:
+✓ INSTRUCCIONES_SISTEMA_PAGO.txt  - Instrucciones detalladas
+✓ GUIA_RAPIDA.txt                 - Este archivo
+
+Modificaciones:
+✓ carrito.php              - Botón "Finalizar Compra" ahora va a métodos de pago
+
+DATOS QUE SE GUARDAN:
+====================
+
+Tabla: ordenes
+- ID de orden (auto-generado)
+- Usuario (si está registrado)
+- Fecha y hora
+- Total de compra
+- Estado (pendiente/pagado/cancelado)
+- Método de pago (tarjeta/tienda)
+- Datos de tarjeta (solo últimos 4 dígitos por seguridad)
+- Código de barras (para pago en tienda)
+- Tienda seleccionada
+- Detalles de productos (JSON)
+
+Tabla: detalles_orden
+- ID del detalle
+- ID de orden
+- Producto (nombre, precio, cantidad)
+- Subtotal de cada producto
+
+VISTA RÁPIDA DE ESTADOS:
+=======================
+
+🟡 pendiente_pago_tarjeta   = Esperando confirmación de pago con tarjeta
+🔵 pendiente_pago_tienda    = Esperando pago en tienda (código activo)
+🟢 pagado                   = Orden pagada y confirmada
+🔴 cancelado               = Orden cancelada (si implementas cancelación)
+
+CÓDIGO DE BARRAS:
+================
+
+Tipo: CODE128 (estándar para retail)
+Generado con: JsBarcode (librería JavaScript)
+Formato: OED + timestamp + número aleatorio
+Ejemplo: OED1685632801234
+
+Cliente puede:
+- Ver en pantalla
+- Imprimir
+- Descargar como PNG
+
+PREGUNTAS FRECUENTES:
+====================
+
+P: ¿Se almacenan números de tarjeta completos?
+R: NO - Solo se almacena el nombre y últimos 4 dígitos
+
+P: ¿Está seguro el sistema?
+R: Es una demostración. En producción usar HTTPS y pasarela de pago real
+
+P: ¿Cómo confirmar pagos con tarjeta?
+R: El admin marca manualmente en gestor_ordenes.php
+   (En producción: integrar Stripe, PayPal, etc.)
+
+P: ¿El código de barras es válido?
+R: Visualmente sí. Es CODE128 estándar.
+   (Para usar con escáner real: integrar con tu sistema POS)
+
+P: ¿Los clientes reciben confirmación por email?
+R: No incluido (puedes agregarlo enviando el número de orden)
+
+P: ¿Se puede cancelar una orden?
+R: Sí (agregar botón en gestor_ordenes.php)
+
+PERSONALIZACIONES SUGERIDAS:
+============================
+
+1. Agregar más tiendas en metodos_pago.php
+2. Cambiar nombre/logo de la tienda
+3. Agregar horarios de tiendas
+4. Enviar email de confirmación
+5. Agregar cupones de descuento
+6. Sincronizar con sistema de inventario
+7. Exportar órdenes a Excel
+8. Agregar comentarios del admin a órdenes
+
+INTEGRACIÓN CON PASARELAS (Futuro):
+==================================
+
+Para Stripe:
+- Instalar SDK de Stripe
+- Modificar procesar_pago.php
+- Cambiar estado a 'pagado' automáticamente
+
+Para PayPal:
+- Usar SDK de PayPal
+- Crear endpoint de webhook
+- Confirmar pagos automáticamente
+
+Para mercadoPago:
+- Crear preferencia de pago
+- Redirigir a mercadoPago
+- Escuchar webhooks de confirmación
+
+SOPORTE Y ERRORES:
+=================
+
+Si algo no funciona:
+1. Abre la consola del navegador (F12)
+2. Ve a la pestaña "Console"
+3. Verás mensajes de error
+4. Copia el error y búscalo en Google
+
+Errores comunes:
+- "Table doesn't exist" = Correr crear_tabla_ordenes.php
+- "Session error" = Limpiar cookies del navegador
+- "Código de barras no se ve" = Verificar conexión a internet
+- "500 error" = Revisar permisos de carpeta
+
+========================================
+¡Listo para usar!
+Disfruta tu nuevo sistema de pagos
+========================================

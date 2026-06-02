@@ -1,0 +1,37 @@
+[
+    {
+        "titulo": "DESCUENTO ESPECIAL EN AREA DE MODA",
+        "descripcion": "Hasta 50% en Productos Smart",
+        "etiqueta": "OFERTA LIMITADA,CORRE YA",
+        "imagen": "https:\/\/ahorrosydescuentos.com\/wp-content\/uploads\/2023\/08\/online-shopping.jpg",
+        "gradiente": "linear-gradient(135deg, #002b5b 0%, #ffa500 100%)"
+    },
+    {
+        "titulo": "TECNOLOG\u00cdA AL MEJOR PRECIO",
+        "descripcion": "Equipos y accesorios con descuento",
+        "etiqueta": "HOY SOLAMENTE",
+        "imagen": "https:\/\/cdn.mos.cms.futurecdn.net\/acd486d5e0ac99660e8bf382340508ff-480-80.jpg",
+        "gradiente": "linear-gradient(135deg, #003d7a 0%, #ffa500 100%)"
+    },
+    {
+        "titulo": "HOGAR INTELIGENTE",
+        "descripcion": "Convierte tu hogar con los mejores gadgets",
+        "etiqueta": "ENV\u00cdO GRATIS",
+        "imagen": "https:\/\/lh7-rt.googleusercontent.com\/docsz\/AD_4nXffJGC41FdNJP4hr08M96NfjTt0VEDjiYmPXcG4mB1Bi4pXiqBkbhCHXlUTuz3fLl65WnykAygUcZM7HRWBfcJE5Sg4nos8tcCVTasi-P8GE_5SV1rm2zKnOq1ohakhTySnLqKAkg?key=Wjup9a5qdqLcm-B2lD8-M1Z8",
+        "gradiente": "linear-gradient(135deg, #002b5b 0%, #004080 100%)"
+    },
+    {
+        "titulo": "DEPORTES 20%",
+        "descripcion": "Colecciones exclusivas con grandes descuentos",
+        "etiqueta": "REBAJAS",
+        "imagen": "https:\/\/tse1.mm.bing.net\/th\/id\/OIP._rCxkIPfFW8FbRPcyslNVQHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+        "gradiente": "linear-gradient(135deg, #1e4d8b 0%, #ffa500 100%)"
+    },
+    {
+        "titulo": "PASTAMAN\u00cdAS GOURMET",
+        "descripcion": "Sabores italianos aut\u00e9nticos importados",
+        "etiqueta": "CON REGALO Y UN GRAN SASON",
+        "imagen": "https:\/\/tse3.mm.bing.net\/th\/id\/OIP.13aDo3BgNL13DDIlciYz7wHaDq?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+        "gradiente": "linear-gradient(135deg, #003d7a 0%, #002b5b 100%)"
+    }
+]

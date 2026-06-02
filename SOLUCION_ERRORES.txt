@@ -1,0 +1,126 @@
+╔════════════════════════════════════════════════════════════════════╗
+║          SOLUCIÓN RÁPIDA - ERRORES DEL SISTEMA DE PAGO            ║
+╚════════════════════════════════════════════════════════════════════╝
+
+PROBLEMA 1: "Table 'tiendaonline.ordenes' doesn't exist"
+═══════════════════════════════════════════════════════════
+
+✗ El error significa que las tablas no fueron creadas en la BD.
+
+SOLUCIÓN INMEDIATA (UNA SOLA LÍNEA):
+────────────────────────────────────
+
+Abre tu navegador y ve a:
+
+    http://localhost/tiendaonline/reparar_sistema.php
+
+Este archivo:
+✓ Verifica la conexión a BD
+✓ Crea las tablas automáticamente
+✓ Crea los índices
+✓ Muestra el estado de cada paso
+
+
+PROBLEMA 2: "Pago con tarjeta no me deja procesar"
+═══════════════════════════════════════════════════
+
+✗ El problema era la validación del formulario.
+
+SOLUCIONES IMPLEMENTADAS:
+─────────────────────────
+
+✓ Validación mejorada de números de tarjeta (13-19 dígitos)
+✓ Validación de CVV más precisa (3-4 dígitos)
+✓ Mejor detección de método de pago
+✓ Inicialización automática del formulario de tarjeta
+✓ Mensajes de error más claros
+
+
+PASOS PARA REPARAR TODO:
+════════════════════════
+
+1. Abre navegador → http://localhost/tiendaonline/reparar_sistema.php
+   
+2. Espera a que se creen las tablas (verás mensajes verdes)
+
+3. Vuelve a la tienda → http://localhost/tiendaonline/index.php
+
+4. Prueba con cualquiera de estos datos de demo:
+
+   PAGO CON TARJETA (DEMO):
+   ─────────────────────────
+   Nombre: JUAN GARCIA
+   Número: 4532015112830366
+   Vencimiento: 12/25
+   CVV: 123
+
+   PAGO EN TIENDA:
+   ────────────────
+   Selecciona cualquier tienda
+   Se generará el código de barras automáticamente
+
+
+DATOS QUE FUNCIONAN PARA PRUEBA:
+════════════════════════════════
+
+Cualquier número de 16 dígitos funciona en modo demo:
+  • 4532015112830366
+  • 5425233010103015
+  • 3782822463100005
+
+Vencimiento: MM/AA (ej: 12/25, 06/27)
+CVV: 3 o 4 dígitos (ej: 123, 1234)
+
+
+SI AÚN HAY PROBLEMAS:
+═════════════════════
+
+1. Limpia el caché del navegador (Ctrl+Shift+Supr)
+2. Cierra y reabre el navegador
+3. Intenta en incógnito/privado
+4. Verifica que MySQL esté corriendo
+5. Verifica la conexión en conexion.php
+
+
+ARCHIVOS MODIFICADOS/CREADOS HOY:
+══════════════════════════════════
+
+✓ reparar_sistema.php (NUEVO - AUTO-REPARADOR)
+✓ metodos_pago.php (MEJORADO - Validación corregida)
+✓ Otros archivos sin cambios
+
+
+¿CÓMO VERIFICAR QUE FUNCIONA?
+══════════════════════════════
+
+1. Ve a: http://localhost/tiendaonline/gestor_ordenes.php
+2. Deberías ver el panel de admin (aunque vacío al inicio)
+3. Intenta hacer una compra de prueba
+4. La orden debe aparecer en el gestor
+
+
+RESUMEN DE CORRECCIONES:
+════════════════════════
+
+ANTES (Errores):
+  ✗ Tablas no existían
+  ✗ Validación de tarjeta muy estricta
+  ✗ No había inicialización del formulario
+
+AHORA (Funciona):
+  ✓ Tablas creadas automáticamente
+  ✓ Validación flexible pero segura
+  ✓ Formulario inicializado al cargar
+  ✓ Mensajes de error informativos
+  ✓ Sistema listo para usar
+
+
+═══════════════════════════════════════════════════════════════════════
+
+PRÓXIMOS PASOS:
+  1. Ejecuta: http://localhost/tiendaonline/reparar_sistema.php
+  2. Agrega productos y prueba el pago
+  3. Ve al gestor_ordenes.php para ver tus órdenes
+  4. ¡Disfruta!
+
+═══════════════════════════════════════════════════════════════════════

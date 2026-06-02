@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verificar Sistema de Pago</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+        color: #002b5b;
+        text-align: center;
+    }
+    .seccion {
+        margin: 30px 0;
+        padding: 20px;
+        border-left: 4px solid #002b5b;
+        background: #f9f9f9;
+    }
+    .seccion h2 {
+        color: #002b5b;
+        margin-top: 0;
+    }
+    .item-lista {
+        margin: 10px 0;
+        padding: 10px;
+        background: white;
+        border-radius: 3px;
+    }
+    .checkmark {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .info-box {
+        background: #e7f3ff;
+        border-left: 4px solid #2196F3;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 3px;
+    }
+    .warning-box {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 3px;
+    }
+    .success-box {
+        background: #d4edda;
+        border-left: 4px solid #28a745;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 3px;
+    }
+    .table-db {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+    }
+    .table-db th {
+        background: #002b5b;
+        color: white;
+        padding: 10px;
+        text-align: left;
+    }
+    .table-db td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    .table-db tr:hover {
+        background: #f5f5f5;
+    }
+    .btn-verificar {
+        background: #002b5b;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 20px auto;
+        display: block;
+    }
+    .btn-verificar:hover {
+        background: #004a8f;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="fas fa-check-double"></i> Verificador del Sistema de Pago</h1>
+
+    <div class="info-box">
+        <i class="fas fa-info-circle"></i> <strong>Información:</strong>
+        Esta página verifica que todos los archivos y tablas necesarias estén instalados correctamente.
+    </div>
+
+    <!-- SECCIÓN 1: ARCHIVOS CREADOS -->
+    <div class="seccion">
+        <h2><i class="fas fa-files"></i> Archivos del Sistema</h2>
+        <p>Verifica que estos archivos existan en tu carpeta tiendaonline:</p>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>metodos_pago.php</strong>
+            - Página para seleccionar método de pago
+        </div>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>procesar_pago.php</strong>
+            - Procesa la orden y genera código de barras
+        </div>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>confirmacion_pago.php</strong>
+            - Muestra confirmación de compra con código de barras
+        </div>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>crear_tabla_ordenes.php</strong>
+            - Ejecutar una vez para crear tablas en BD
+        </div>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>gestor_ordenes.php</strong>
+            - Panel de administración de órdenes
+        </div>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>get_detalle_orden.php</strong>
+            - Obtiene detalles de una orden
+        </div>
+        
+        <div class="item-lista">
+            <span class="checkmark">✓</span> <strong>schema_ordenes.sql</strong>
+            - Script SQL para crear tablas manualmente
+        </div>
+    </div>
+
+    <!-- SECCIÓN 2: TABLAS DE BASE DE DATOS -->
+    <div class="seccion">
+        <h2><i class="fas fa-database"></i> Tablas de Base de Datos</h2>
+        
+        <h3>Tabla: ordenes</h3>
+        <table class="table-db">
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>idorden</td>
+                    <td>INT AUTO_INCREMENT</td>
+                    <td>ID único de la orden</td>
+                </tr>
+                <tr>
+                    <td>idusuario</td>
+                    <td>INT</td>
+                    <td>ID del cliente (0 si es anónimo)</td>
+                </tr>
+                <tr>
+                    <td>fecha_orden</td>
+                    <td>TIMESTAMP</td>
+                    <td>Fecha y hora de la orden</td>
+                </tr>
+                <tr>
+                    <td>total</td>
+                    <td>DECIMAL(10,2)</td>
+                    <td>Monto total de la compra</td>
+                </tr>
+                <tr>
+                    <td>estado</td>
+                    <td>VARCHAR(50)</td>
+                    <td>pendiente_pago_tarjeta, pendiente_pago_tienda, pagado, cancelado</td>
+                </tr>
+                <tr>
+                    <td>metodo_pago</td>
+                    <td>VARCHAR(50)</td>
+                    <td>tarjeta o tienda</td>
+                </tr>
+                <tr>
+                    <td>numero_tarjeta</td>
+                    <td>VARCHAR(20)</td>
+                    <td>Últimos 4 dígitos de la tarjeta (seguridad)</td>
+                </tr>
+                <tr>
+                    <td>nombre_tarjeta</td>
+                    <td>VARCHAR(100)</td>
+                    <td>Nombre titular de la tarjeta</td>
+                </tr>
+                <tr>
+                    <td>fecha_vencimiento</td>
+                    <td>VARCHAR(10)</td>
+                    <td>MM/AA del vencimiento</td>
+                </tr>
+                <tr>
+                    <td>codigo_barras</td>
+                    <td>VARCHAR(100) UNIQUE</td>
+                    <td>Código único para pago en tienda</td>
+                </tr>
+                <tr>
+                    <td>tienda_cercana</td>
+                    <td>VARCHAR(100)</td>
+                    <td>Nombre de la tienda seleccionada</td>
+                </tr>
+                <tr>
+                    <td>detalles_orden</td>
+                    <td>JSON</td>
+                    <td>Productos y cantidades en formato JSON</td>
+                </tr>
+                <tr>
+                    <td>fecha_actualizacion</td>
+                    <td>TIMESTAMP</td>
+                    <td>Última modificación</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Tabla: detalles_orden</h3>
+        <table class="table-db">
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>iddetalle</td>
+                    <td>INT AUTO_INCREMENT</td>
+                    <td>ID único del detalle</td>
+                </tr>
+                <tr>
+                    <td>idorden</td>
+                    <td>INT</td>
+                    <td>ID de la orden (FK)</td>
+                </tr>
+                <tr>
+                    <td>idproducto</td>
+                    <td>INT</td>
+                    <td>ID del producto</td>
+                </tr>
+                <tr>
+                    <td>nombre_producto</td>
+                    <td>VARCHAR(255)</td>
+                    <td>Nombre del producto</td>
+                </tr>
+                <tr>
+                    <td>precio</td>
+                    <td>DECIMAL(10,2)</td>
+                    <td>Precio al momento de compra</td>
+                </tr>
+                <tr>
+                    <td>cantidad</td>
+                    <td>INT</td>
+                    <td>Cantidad comprada</td>
+                </tr>
+                <tr>
+                    <td>subtotal</td>
+                    <td>DECIMAL(10,2)</td>
+                    <td>Precio x Cantidad</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SECCIÓN 3: FLUJO DE COMPRA -->
+    <div class="seccion">
+        <h2><i class="fas fa-stream"></i> Flujo de Compra</h2>
+        
+        <h3>Paso a Paso:</h3>
+        <ol>
+            <li><strong>Cliente agrega productos al carrito</strong> (session['carrito'])</li>
+            <li><strong>Cliente hace clic en "Finalizar Compra"</strong> → va a <code>metodos_pago.php</code></li>
+            <li><strong>Cliente selecciona método de pago</strong>
+                <ul>
+                    <li>Opción A: Pago con tarjeta → Completa formulario</li>
+                    <li>Opción B: Pagar en tienda → Selecciona tienda</li>
+                </ul>
+            </li>
+            <li><strong>Click en "Procesar Compra"</strong> → POST a <code>procesar_pago.php</code></li>
+            <li><strong>Sistema guarda orden en BD</strong>
+                <ul>
+                    <li>Crea registro en tabla 'ordenes'</li>
+                    <li>Crea registros en 'detalles_orden'</li>
+                    <li>Si es tienda: Genera código de barras único</li>
+                </ul>
+            </li>
+            <li><strong>Redirige a confirmación</strong> → <code>confirmacion_pago.php</code>
+                <ul>
+                    <li>Si es tarjeta: Muestra número de orden</li>
+                    <li>Si es tienda: Muestra código de barras + instrucciones</li>
+                </ul>
+            </li>
+            <li><strong>Cliente ve y descarga/imprime</strong></li>
+            <li><strong>Admin gestiona orden</strong> → <code>gestor_ordenes.php</code>
+                <ul>
+                    <li>Ver detalles de orden</li>
+                    <li>Ver código de barras</li>
+                    <li>Marcar como pagada</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <!-- SECCIÓN 4: PASOS INICIALES -->
+    <div class="seccion">
+        <h2><i class="fas fa-rocket"></i> Primeros Pasos</h2>
+        
+        <div class="warning-box">
+            <strong><i class="fas fa-exclamation-triangle"></i> IMPORTANTE:</strong>
+            Debes ejecutar el archivo de crear tablas PRIMERO, antes de probar el sistema.
+        </div>
+
+        <ol>
+            <li><strong>Crea las tablas en la BD</strong>
+                <br>Opción A (Automática): <a href="crear_tabla_ordenes.php" target="_blank">Haz clic aquí</a>
+                <br>Opción B (Manual): Copia el contenido de schema_ordenes.sql en phpMyAdmin
+            </li>
+            <li><strong>Verifica que no haya errores</strong> en la salida</li>
+            <li><strong>Prueba el sistema</strong>
+                <br><a href="index.php" target="_blank">Ve a la tienda</a>
+                <br>Agrega productos → Finalizar compra → Selecciona método de pago
+            </li>
+            <li><strong>Accede al panel de admin</strong>
+                <br><a href="gestor_ordenes.php" target="_blank">Gestor de órdenes</a>
+            </li>
+        </ol>
+    </div>
+
+    <!-- SECCIÓN 5: SEGURIDAD -->
+    <div class="seccion">
+        <h2><i class="fas fa-shield-alt"></i> Consideraciones de Seguridad</h2>
+        
+        <div class="warning-box">
+            ⚠️ <strong>ADVERTENCIA:</strong> Este es un sistema de demostración.
+            Para PRODUCCIÓN, implementa las siguientes medidas:
+        </div>
+
+        <ul>
+            <li><strong>SSL/HTTPS:</strong> Usa certificado SSL en producción</li>
+            <li><strong>Encriptación:</strong> Encripta datos sensibles (tarjetas)</li>
+            <li><strong>Pasarela de pago:</strong> Integra Stripe, PayPal o mercadoPago</li>
+            <li><strong>Validación:</strong> Valida datos en servidor, no solo cliente</li>
+            <li><strong>PCI DSS:</strong> Cumple con estándares de pago si manejas tarjetas</li>
+            <li><strong>Logs:</strong> Registra todas las transacciones</li>
+            <li><strong>Auditoría:</strong> Mantén historial de cambios en órdenes</li>
+        </ul>
+    </div>
+
+    <!-- SECCIÓN 6: TESTING -->
+    <div class="seccion">
+        <h2><i class="fas fa-vial"></i> Datos de Prueba</h2>
+        
+        <h3>Tarjetas de Prueba (Modo Demo):</h3>
+        <div class="info-box">
+            <strong>Número:</strong> 4532015112830366<br>
+            <strong>Nombre:</strong> JUAN GARCIA<br>
+            <strong>Vencimiento:</strong> 12/25<br>
+            <strong>CVV:</strong> 123
+        </div>
+
+        <h3>Tiendas Disponibles:</h3>
+        <ul>
+            <li>Tienda Centro - Av. Principal 123</li>
+            <li>Tienda Norte - Calle 5 #456</li>
+            <li>Tienda Sur - Carrera 10 #789</li>
+            <li>Tienda Este - Diagonal 20 #321</li>
+            <li>Tienda Oeste - Calle 8 #654</li>
+        </ul>
+    </div>
+
+    <!-- SECCIÓN 7: TROUBLESHOOTING -->
+    <div class="seccion">
+        <h2><i class="fas fa-bug"></i> Solución de Problemas</h2>
+        
+        <h3>Error: "Table 'ordenes' doesn't exist"</h3>
+        <p>→ Solución: Ejecuta <a href="crear_tabla_ordenes.php">crear_tabla_ordenes.php</a></p>
+
+        <h3>Error: "undefined variable carrito"</h3>
+        <p>→ Solución: Asegúrate que session_start() está en carrito.php antes que cualquier HTML</p>
+
+        <h3>Código de barras no se visualiza</h3>
+        <p>→ Solución: Verifica conexión a internet (JsBarcode se carga desde CDN)</p>
+
+        <h3>Las órdenes no se guardan</h3>
+        <p>→ Solución: Verifica los logs del servidor y errores SQL</p>
+
+        <h3>No puedo ver el gestor de órdenes</h3>
+        <p>→ Solución: Verifica permisos de carpeta y que la BD esté funcionando</p>
+    </div>
+
+    <!-- BOTÓN VERIFICAR -->
+    <button class="btn-verificar" onclick="verificarTablas()">
+        <i class="fas fa-check"></i> Verificar Configuración
+    </button>
+
+</div>
+
+<script>
+    function verificarTablas() {
+        fetch('verificar_sistema.php')
+            .then(response => response.json())
+            .then(data => {
+                let mensaje = 'VERIFICACIÓN DEL SISTEMA:\n\n';
+                
+                if(data.tabla_ordenes) {
+                    mensaje += '✓ Tabla "ordenes" existe\n';
+                } else {
+                    mensaje += '✗ Tabla "ordenes" NO existe - Ejecuta crear_tabla_ordenes.php\n';
+                }
+                
+                if(data.tabla_detalles) {
+                    mensaje += '✓ Tabla "detalles_orden" existe\n';
+                } else {
+                    mensaje += '✗ Tabla "detalles_orden" NO existe - Ejecuta crear_tabla_ordenes.php\n';
+                }
+                
+                mensaje += '\nDetalles: ' + data.mensaje;
+                
+                alert(mensaje);
+            })
+            .catch(error => {
+                alert('Error al verificar: ' + error);
+            });
+    }
+</script>
+
+</body>
+</html>
